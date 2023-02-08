@@ -32,6 +32,7 @@ int64_t get_total_packets_count(const char* in_filename) {
     AVPacket pkt;
     int ret;
     int64_t total_packets_count = 0;
+    av_dict_set(&ffmpeg_options, PROTOCOL_OPTION_KEY, PROTOCOL_OPTION_VALUE, 0);
     if ((ret == avformat_open_input(&ifmt_ctx, in_filename, 0, &ffmpeg_options)) < 0) {
         LOGE("Could not open input file '%s'", in_filename);
         LOGE("Error occurred: %s\n", av_err2str(ret));
@@ -87,7 +88,7 @@ Java_com_jeffmony_m3u8library_VideoProcessor_transformVideo(JNIEnv *env, jobject
     int first_pkt = 0;
     int64_t total_packets_count, temp_packets_count = 0;
     float current_progress, last_progress = -1;
-
+    av_dict_set(&ffmpeg_options, PROTOCOL_OPTION_KEY, PROTOCOL_OPTION_VALUE, 0);
     if ((ret = avformat_open_input(&ifmt_ctx, in_filename, 0, &ffmpeg_options)) < 0) {
         LOGE("Could not open input file '%s'", in_filename);
         LOGE("Error occurred: %s\n", av_err2str(ret));
